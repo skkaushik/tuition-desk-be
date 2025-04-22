@@ -60,4 +60,31 @@ const studentDetaislById = async (req, res) => {
     }
 }
 
-module.exports = { studentOnboarding, studentsOnboardingList, studentDetaislById }
+const updateStudentStatus = async (req, res) => {
+    const { id: studentId } = req.params;
+    const { status } = req.body;
+
+    try {
+        const student = await Student.findByIdAndUpdate(studentId, { status }, { new: true, runValidators: true })
+        //  will give We pass { new: true } to tell Mongoose: “Hey, after updating, give me the new version of the document (with the updated data).”
+
+        if (!student) {
+            res.status(400).json({
+                success: false,
+                message: "Student Not Found"
+            })
+        }
+        res.status(200).json({
+            success: true,
+            message: "Student Status Updated Successfully!",
+            data: student
+        })
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
+module.exports = { studentOnboarding, studentsOnboardingList, studentDetaislById, updateStudentStatus }

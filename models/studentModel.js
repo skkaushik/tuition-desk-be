@@ -29,8 +29,9 @@ const studentSchema = new Schema({
         type: Date,
         required: true
     },
-    isActive: {
-        type: Boolean,
+    status: {
+        type: String,
+        enum: ['Active', 'Inactive'],
         required: true,
     }
 });
